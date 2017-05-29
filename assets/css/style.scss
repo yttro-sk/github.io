@@ -1,0 +1,53 @@
+
+@import "{{ site.theme }}";
+header {
+	float: none;
+	position: fixed;
+	z-index: 2;
+}
+
+.header-background {
+	height: 160px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	background-color: #f2f2f2;
+	z-index: 1;
+}
+
+section {
+	float: none;
+	width: 100%;
+	top: 160px;
+	position: relative;
+	z-index: 0;
+}
+
+footer {
+	float: none;
+	width: 100%;
+	position: static;
+	margin-top: 160px;
+	z-index: 0;
+} 
+
+@media print, screen and (max-width: 960px) {
+
+	.header-background {
+		position: static;
+		height: 0px;
+	}
+	
+	header {
+		position: static;
+	}
+	
+	section {
+		position: static;
+	}
+
+	footer {
+		margin-top: 0px;
+	}
+}
