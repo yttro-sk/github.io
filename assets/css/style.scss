@@ -1,25 +1,31 @@
+---
+---
 
 @import "{{ site.theme }}";
+
 header {
 	float: none;
 	position: fixed;
 	z-index: 2;
+	top: 60px;
 }
 
-.header-background {
-	height: 160px;
+canvas {
+	height: 170px;
 	position: fixed;
 	left: 0;
 	right: 0;
 	top: 0;
+	width: 100%;
 	background-color: #f2f2f2;
 	z-index: 1;
+        border: none;
 }
 
 section {
 	float: none;
 	width: 100%;
-	top: 160px;
+	margin-top: 170px;
 	position: relative;
 	z-index: 0;
 }
@@ -28,13 +34,13 @@ footer {
 	float: none;
 	width: 100%;
 	position: static;
-	margin-top: 160px;
+	margin-top: 250px;
 	z-index: 0;
 } 
 
 @media print, screen and (max-width: 960px) {
 
-	.header-background {
+	canvas {
 		position: static;
 		height: 0px;
 	}
