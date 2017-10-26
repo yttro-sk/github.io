@@ -2,6 +2,8 @@
 var particles = [];
 var stage, graphics;
 var loader, logo;
+var scaleFactor;
+var viewportWidth, viewportHeight;
 
 function init() {
 	resizeCanvas();
@@ -23,12 +25,35 @@ function init() {
 function resizeCanvas() {
 	let canvas = document.getElementById("animation");
 	let style = window.getComputedStyle(canvas);
-	let width = style.getPropertyValue("width");
-	let height = style.getPropertyValue("height");
+	let elementWidth = parseInt(style.getPropertyValue("width"));
+	let elementHeight = parseInt(style.getPropertyValue("height"));
 
-	canvas.width = parseInt(width);
-	canvas.height = parseInt(height);
-	console.log("Canvas resized:" + width + ":" + height);
+    scaleFactor = getDevicePixelRatio();
+
+    if (scaleFactor > 1) {
+		canvas.width = elementWidth * scaleFactor;
+		canvas.height = elementHeight * scaleFactor;
+		canvas.style.width = elementWidth + "px";
+		canvas.style.height = elementHeight + "px";
+    } else {
+		canvas.width = elementWidth;
+		canvas.height = elementHeight;
+    }
+
+    viewportWidth = elementWidth;
+    viewportHeight = elementHeight;
+
+	//console.log("Canvas resized: " + canvas.width + ":" + canvas.height);
+	//console.log("Viewport resized: " + viewportWidth + ":" + viewportHeight);
+}
+
+function getDevicePixelRatio() {
+    if ("devicePixelRatio" in window) {
+        if (window.devicePixelRatio > 1) {
+            return window.devicePixelRatio;
+        }
+    }
+    return 1;
 }
 
 function drawScene() {
@@ -37,7 +62,7 @@ function drawScene() {
 	graphics.clear();
 
 	for(let i=0; i<particles.length; i++) {
-		particles[i].update(canvas.width, canvas.height);
+		particles[i].update(viewportWidth, viewportHeight);
 		particles[i].draw(graphics, i);
 	}
 	
@@ -75,15 +100,15 @@ class Particle {
 
 	draw(g, index) {
 		
-		g.beginFill("#a3a3a3").drawCircle(this.x, this.y, 1.1);
 	
+		g.beginFill("#a3a3a3").drawCircle(this.x * scaleFactor, this.y * scaleFactor, 1.1 * scaleFactor);
 		for(let i=index+1; i<particles.length; i++) {
 			let p = particles[i];
 			let dist = this.distance(p);
 			
 			if(dist < 100) {
-				g.setStrokeStyle(this.lineWidth(dist)).beginStroke(this.lineColor(dist));			
-				g.moveTo(this.x, this.y).lineTo(p.x, p.y);
+				g.setStrokeStyle(this.lineWidth(dist) * scaleFactor).beginStroke(this.lineColor(dist));
+				g.moveTo(this.x * scaleFactor, this.y * scaleFactor).lineTo(p.x * scaleFactor, p.y * scaleFactor);
 			}
 		}
 	};
